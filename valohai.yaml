@@ -24,7 +24,7 @@
       - name: evaluation.json
 
 - pipeline:
-    name: demo-training-pipeline
+    name: chint-pipeline
     nodes:
       - name: preprocess
         type: execution
