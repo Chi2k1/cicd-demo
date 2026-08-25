@@ -1,0 +1,40 @@
+- step:
+    name: preprocess-data
+    image: python:3.11-slim
+    command: python preprocess.py
+    outputs:
+      - name: raw_data.csv
+
+- step:
+    name: train-model
+    image: python:3.11-slim
+    command: python train.py
+    inputs:
+      - name: input_data
+    outputs:
+      - name: model.pkl
+
+- step:
+    name: evaluate-model
+    image: python:3.11-slim
+    command: python evaluate.py
+    inputs:
+      - name: model_file
+    outputs:
+      - name: evaluation.json
+
+- pipeline:
+    name: demo-training-pipeline
+    nodes:
+      - name: preprocess
+        type: execution
+        step: preprocess-data
+      - name: train
+        type: execution
+        step: train-model
+      - name: evaluate
+        type: execution
+        step: evaluate-model
+    edges:
+      - [preprocess.output.raw_data.csv, train.input.input_data]
+      - [train.output.model.pkl, evaluate.input.model_file]
