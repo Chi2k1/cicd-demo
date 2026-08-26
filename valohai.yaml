@@ -1,7 +1,12 @@
 - step:
     name: preprocess-data
     image: python:3.11-slim
-    command: python preprocess.py
+    command: python preprocess.py {parameters}
+    parameters:
+      - name: num_rows
+        default: 100
+        type: integer
+        description: So dong du lieu gia lap can tao
     outputs:
       - name: raw_data.csv
 
@@ -24,7 +29,7 @@
       - name: evaluation.json
 
 - pipeline:
-    name: chint-pipeline
+    name: demo-training-pipeline
     nodes:
       - name: preprocess
         type: execution
